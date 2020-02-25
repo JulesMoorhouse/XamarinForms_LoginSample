@@ -17,7 +17,8 @@ namespace LoginSample.Models
 
         public bool CheckInformation()
         {
-            if (!this.Username.Equals("") && !this.Password.Equals(""))
+            if ((this.Username != null && !this.Username.Equals("")) &&
+                (this.Password != null && !this.Password.Equals("")))
             {
                 return true;
             }
