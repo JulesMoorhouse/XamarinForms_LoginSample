@@ -1,4 +1,5 @@
 ﻿using System;
+using LoginSample.Data;
 using LoginSample.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -7,6 +8,9 @@ namespace LoginSample
 {
     public partial class App : Application
     {
+        static TokenDatabaseController tokenDatabase;
+        static UserDatabaseController userDatabase;
+
         public App()
         {
             InitializeComponent();
@@ -24,6 +28,30 @@ namespace LoginSample
 
         protected override void OnResume()
         {
+        }
+
+        public static UserDatabaseController UserDatabase
+        {
+            get
+            {
+                if (userDatabase == null)
+                {
+                    userDatabase = new UserDatabaseController();
+                }
+                return userDatabase;
+            }
+        }
+
+        public static TokenDatabaseController TokenDatabase
+        {
+            get
+            {
+                if (tokenDatabase == null)
+                {
+                    tokenDatabase = new TokenDatabaseController();
+                }
+                return tokenDatabase;
+            }
         }
     }
 }

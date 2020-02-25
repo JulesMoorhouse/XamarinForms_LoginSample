@@ -32,6 +32,7 @@ namespace LoginSample.Views
             var user = new User(entryUsername.Text, entryPassword.Text);
             if (user.CheckInformation())
             {
+                App.UserDatabase.SaveUser(user);
                 DisplayAlert("Login", "Login success", "OK");
             }
             else
