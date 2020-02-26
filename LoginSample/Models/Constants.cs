@@ -13,8 +13,7 @@ namespace LoginSample.Models
 
         public static int LoginIconHeight = 120;
 
-        public Constants()
-        {
-        }
+        //------ Login ------
+        public static string LoginUrl = "https://test.com/api/Auth/Login";
     }
 }
