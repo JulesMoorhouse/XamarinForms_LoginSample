@@ -10,6 +10,7 @@ namespace LoginSample.Models
         public string AccessToken { get; set; }
         public string ErrorDescription { get; set; }
         public DateTime ExpireDate { get; set; }
+        public int ExpireIn { get; set; }
 
         public Token()
         {
