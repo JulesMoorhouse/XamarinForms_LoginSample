@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using LoginSample.Models;
+using LoginSample.Views.Menu;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -22,6 +23,7 @@ namespace LoginSample.Views
             lblPassword.TextColor = Constants.MainTextColour;
             ActivitySpinner.IsVisible = false;
             LoginIcon.HeightRequest = Constants.LoginIconHeight;
+            App.StartCheckIfInternet(lblNoInternet, this);
 
             entryUsername.Completed += (s, e) => entryPassword.Focus();
             entryPassword.Completed += (s, e) => btnSignin_Clicked(s, e);
@@ -33,10 +35,23 @@ namespace LoginSample.Views
             if (user.CheckInformation())
             {
                 _ = DisplayAlert("Login", "Login success", "OK");
-                var result = await App.RestService.Login(user);
-                if (result.AccessToken != null)
+                //var result = await App.RestService.Login(user);
+                var result = new Token(); // Dummy token as we don't have a website
+                //if (result.AccessToken != null)
+                if (result != null)
                 {
-                    App.UserDatabase.SaveUser(user);
+                    //App.UserDatabase.SaveUser(user);
+                    //App.TokenDatabase.SaveToken(result);
+
+                    if (Device.OS == TargetPlatform.Android)
+                    {
+                        Application.Current.MainPage = new NavigationPage(new Dashboard());
+                    }
+                    else if (Device.OS == TargetPlatform.iOS)
+                    {
+                        await Navigation.PushModalAsync(new NavigationPage(new Dashboard()));
+
+                    }
                 }
             }
             else

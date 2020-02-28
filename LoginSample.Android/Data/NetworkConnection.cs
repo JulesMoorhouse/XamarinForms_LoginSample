@@ -12,8 +12,7 @@ namespace LoginSample.Droid.Data
     {
         public bool IsConnected { get; set; }
 
-        [Obsolete]
-        public void CheckInternetConnection()
+        public void CheckNetworkConnection()
         {
             var connectivityManager = (ConnectivityManager)Application.Context.GetSystemService(Context.ConnectivityService);
             var activeNetworkInfo = connectivityManager.ActiveNetworkInfo;

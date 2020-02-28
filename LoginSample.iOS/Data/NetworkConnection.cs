@@ -3,16 +3,15 @@ using CoreFoundation;
 using LoginSample.Data;
 using LoginSample.iOS.Data;
 using SystemConfiguration;
-using Xamarin.Forms;
 
-[assembly: Dependency(typeof(NetworkConnection))]
+[assembly: Xamarin.Forms.Dependency(typeof(NetworkConnection))]
 namespace LoginSample.iOS.Data
 {
     public class NetworkConnection : INetworkConnection
     {
         public bool IsConnected { get; set; }
 
-        public void CheckInternetConnection()
+        public void CheckNetworkConnection()
         {
             InternetStatus();
         }
@@ -21,13 +20,9 @@ namespace LoginSample.iOS.Data
         {
             NetworkReachabilityFlags flags;
             bool defaultNetworkAvailable = IsNetworkAvailable(out flags);
-            if (defaultNetworkAvailable && ((flags & NetworkReachabilityFlags.IsDirect) != 0))
+            if (defaultNetworkAvailable && (flags & NetworkReachabilityFlags.IsDirect) != 0)
             {
                 return false;
-            }
-            else if ((flags & NetworkReachabilityFlags.IsWWAN) != 0)
-            {
-                return true;
             }
             else if (flags == 0)
             {
@@ -46,16 +41,16 @@ namespace LoginSample.iOS.Data
             }
         }
 
-        private NetworkReachability defaultReachability;
+        private NetworkReachability defaultNetworkReachability;
         public bool IsNetworkAvailable(out NetworkReachabilityFlags flags)
         {
-            if (defaultReachability == null)
+            if (defaultNetworkReachability == null)
             {
-                defaultReachability = new NetworkReachability(new System.Net.IPAddress(0));
-                defaultReachability.SetNotification(onChange);
-                defaultReachability.Schedule(CFRunLoop.Current, CFRunLoop.ModeDefault);
+                defaultNetworkReachability = new NetworkReachability(new System.Net.IPAddress(0));
+                defaultNetworkReachability.SetNotification(onChange);
+                defaultNetworkReachability.Schedule(CFRunLoop.Current, CFRunLoop.ModeDefault);
             }
-            if (!defaultReachability.TryGetFlags(out flags))
+            if (!defaultNetworkReachability.TryGetFlags(out flags))
             {
                 return false;
             }
@@ -65,13 +60,13 @@ namespace LoginSample.iOS.Data
         private bool ISReachableWithoutRequiringConnection(NetworkReachabilityFlags flags)
         {
             bool isReachable = (flags & NetworkReachabilityFlags.Reachable) != 0;
-            bool noConnectionRquired = (flags & NetworkReachabilityFlags.ConnectionRequired) == 0;
+            bool noConnectionRequired = (flags & NetworkReachabilityFlags.ConnectionRequired) == 0;
 
             if ((flags & NetworkReachabilityFlags.IsWWAN) != 0)
             {
-                noConnectionRquired = true;
+                noConnectionRequired = true;
             }
-            return isReachable && noConnectionRquired;
+            return isReachable && noConnectionRequired;
         }
     }
 }
